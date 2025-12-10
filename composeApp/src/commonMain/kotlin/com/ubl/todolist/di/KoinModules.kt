@@ -12,6 +12,7 @@ import com.ubl.todolist.domain.usecase.GetTaskByIdUseCase
 import com.ubl.todolist.domain.usecase.UpdateTaskUseCase
 import com.ubl.todolist.presentation.screens.addTask.AddTaskViewModel
 import com.ubl.todolist.presentation.screens.home.HomeScreenViewModel
+import com.ubl.todolist.presentation.screens.taskDetail.TaskDetailViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -47,6 +48,7 @@ val useCaseModule = module {
 val viewModelModule = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::AddTaskViewModel)
+    viewModelOf(::TaskDetailViewModel)
 }
 
 

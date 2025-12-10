@@ -9,6 +9,7 @@ plugins {
     //alias(libs.plugins.composeHotReload)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 repositories {
@@ -64,7 +65,6 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
-
         }
         iosMain.dependencies {}
         commonTest.dependencies {

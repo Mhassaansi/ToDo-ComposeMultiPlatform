@@ -17,10 +17,7 @@ import com.ubl.todolist.presentation.navigation.NavRoutes
 @Composable
 fun BottomNavBar(navController: NavController) {
     val items = listOf(
-        NavRoutes.HomeScreen,
-        NavRoutes.ProfileScreen,
-        NavRoutes.SettingsScreen
-    )
+        NavRoutes.HomeScreen)
     NavigationBar {
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
         items.forEach { screen ->
@@ -40,8 +37,6 @@ fun BottomNavBar(navController: NavController) {
                 icon = {
                     when (screen) {
                         NavRoutes.HomeScreen -> Icon(Icons.Default.Home, "Home")
-                        NavRoutes.SettingsScreen -> Icon(Icons.Default.Settings, "Settings")
-                        NavRoutes.ProfileScreen -> Icon(Icons.Default.Person, "Profile")
                         else -> {}
                     }
                 },

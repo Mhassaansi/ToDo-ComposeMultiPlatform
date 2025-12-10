@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -25,15 +26,17 @@ fun TopBarCommon(
     showBack: Boolean = false,
     showEdit: Boolean = false,
     showSearch: Boolean = false,
+    showDelete: Boolean = false,
     onBackClick: () -> Unit = {},
     onEditClick: () -> Unit = {},
-    onSearchClick: () -> Unit = {}
+    onSearchClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {}
 ) {
     TopAppBar(
         navigationIcon = {
             if (showBack) {
                 IconButton(onClick = { onBackClick() }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
             }
         },
@@ -54,6 +57,11 @@ fun TopBarCommon(
             if (showEdit) {
                 IconButton(onClick = { onEditClick() }) {
                     Icon(Icons.Default.Edit, contentDescription = "Edit")
+                }
+            }
+            if(showDelete){
+                IconButton(onClick = { onDeleteClick() }) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete")
                 }
             }
         }

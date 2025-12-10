@@ -45,7 +45,7 @@ fun SplashScreen(onTimeOut: ()  -> Unit) {
             Text(
                 text = "Todo Master",
                 style = AppTypography.labelLarge.copy(
-                    fontSize = 24.sp // Adjust text size
+                    fontSize = 24.sp
                 ),
                 color = Color.White
             )

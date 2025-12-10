@@ -52,61 +52,96 @@ import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun AddTaskScreen(navController: NavController) {
+fun AddTaskScreen(navController: NavController, isEditable: Boolean? = false, taskId: Int? = 0) {
 
 
     val viewModel = koinViewModel<AddTaskViewModel>()
     val scope = rememberCoroutineScope()
-
-    val currentTime = getCurrentTimeAsLong()
     val title = remember { mutableStateOf("") }
     val description = remember { mutableStateOf("") }
+    val createdAt = remember { mutableStateOf("") }
+    val updatedAt = remember { mutableStateOf("") }
+    val currentTime = getCurrentTimeAsLong().toStringFormat()
+
+
 
     val selectedPriority = remember { mutableStateOf("Medium") }
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val snackBarHostState = remember { SnackbarHostState() }
+    uiState.task
 
-    val newTask = Task(
-        title = title.value,
-        description = description.value,
-        priority = selectedPriority.value,
-        isCompleted = false,
-        createdAt = currentTime.toStringFormat(),
-        updatedAt = currentTime.toStringFormat()
-    )
+    LaunchedEffect(isEditable, taskId) {
+        if (isEditable == true && taskId != null) {
+            viewModel.getTaskById(taskId)
+        }
+    }
+
+
+    LaunchedEffect(uiState.task) {
+        uiState.task?.let { task ->
+            title.value = task.title
+            description.value = task.description
+            selectedPriority.value = task.priority
+            createdAt.value = task.updatedAt
+            updatedAt.value = task.updatedAt
+        }
+    }
+
+
+
+
+
+    val newTask = if (isEditable == true && uiState.task != null) {
+        Task(
+            id = uiState.task.id,
+            title = title.value,
+            description = description.value,
+            priority = selectedPriority.value,
+            isCompleted = uiState.task.isCompleted,
+            createdAt = uiState.task.createdAt,
+            updatedAt = currentTime
+        )
+    } else {
+        Task(
+            title = title.value,
+            description = description.value,
+            priority = selectedPriority.value,
+            isCompleted = false,
+            createdAt = currentTime,
+            updatedAt = currentTime
+        )
+    }
 
 
     LaunchedEffect(Unit) {
-            viewModel.saveSuccessEvent.collect {
-                snackBarHostState.showSnackbar(
-                    message = "Task saved successfully!",
-                    actionLabel = "View",
-                    duration = SnackbarDuration.Short
-                )
-                navController.popBackStack()
-            }
-            }
+        viewModel.saveSuccessEvent.collect {
+            snackBarHostState.showSnackbar(
+                message = "Task saved successfully!",
+                actionLabel = "View",
+                duration = SnackbarDuration.Short
+            )
+            navController.popBackStack()
+        }
+    }
 
 
     LaunchedEffect(uiState.userMessage) {
         uiState.userMessage?.let { message ->
             scope.launch {
                 snackBarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = "Dismiss",
-                    duration = SnackbarDuration.Short
+                    message = message, actionLabel = "Dismiss", duration = SnackbarDuration.Short,
+                    withDismissAction = true
                 )
+
             }
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopBarCommon(
-                title = "Add Task", showBack = true, onBackClick = { navController.popBackStack()})},
-        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
-        ) { innerPadding ->
+    Scaffold(topBar = {
+        TopBarCommon(
+            title = "Add Task", showBack = true, onBackClick = { navController.popBackStack() })
+    }, snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { innerPadding ->
 
         Box(
             modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.White)
@@ -147,15 +182,21 @@ fun AddTaskScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 ) {
-                    PriorityChip("Low", Color.Green,
+                    PriorityChip(
+                        "Low",
+                        Color.Green,
                         modifier = Modifier.weight(1f),
-                        onClick = { selectedPriority.value = "low"})
-                    PriorityChip("Medium", Color(0xFFFFA500),
+                        onClick = { selectedPriority.value = "low" })
+                    PriorityChip(
+                        "Medium",
+                        Color(0xFFFFA500),
                         modifier = Modifier.weight(1f),
-                        onClick = { selectedPriority.value = "medium"})
-                    PriorityChip("High", Color.Red,
+                        onClick = { selectedPriority.value = "medium" })
+                    PriorityChip(
+                        "High",
+                        Color.Red,
                         modifier = Modifier.weight(1f),
-                        onClick = { selectedPriority.value = "high"})
+                        onClick = { selectedPriority.value = "high" })
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -188,7 +229,13 @@ fun AddTaskScreen(navController: NavController) {
                                 }
                                 return@Button
                             }
-                            viewModel.insertTask(newTask)
+                            if(isEditable == true){
+                                viewModel.updateTask(newTask)
+                            }
+                            else{
+                                viewModel.insertTask(newTask)
+                            }
+
                         },
                         modifier = Modifier.weight(1f).fillMaxHeight(),
                         shape = RoundedCornerShape(12.dp),
@@ -217,8 +264,8 @@ fun PriorityChip(
         shape = RoundedCornerShape(50),
         color = color.copy(alpha = 0.3f),
         modifier = modifier.height(40.dp).clickable(
-                interactionSource = interactionSource, onClick = onClick, indication = indication
-            )
+            interactionSource = interactionSource, onClick = onClick, indication = indication
+        )
     ) {
         Box(
             contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()

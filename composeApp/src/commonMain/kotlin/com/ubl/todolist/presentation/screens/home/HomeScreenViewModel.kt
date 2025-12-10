@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ubl.todolist.data.local.Task
 import com.ubl.todolist.domain.usecase.DeleteTaskUseCase
 import com.ubl.todolist.domain.usecase.GetAllTaskUseCase
+import com.ubl.todolist.domain.usecase.UpdateTaskUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,8 @@ data class TaskListUiState(
 class HomeScreenViewModel() : ViewModel() , KoinComponent {
     private val getAllTaskUseCase: GetAllTaskUseCase by inject()
     private val deleteTaskUseCase: DeleteTaskUseCase by inject()
+    private val updateTaskUseCase: UpdateTaskUseCase by inject()
+
     private val _uiState = MutableStateFlow(TaskListUiState(isLoading = true))
     val uiState: StateFlow<TaskListUiState> = _uiState.asStateFlow()
 
@@ -51,20 +54,34 @@ class HomeScreenViewModel() : ViewModel() , KoinComponent {
                 }
             }
         }
+    }
 
-
-
-
-        fun deleteTask(taskId: Int) {
-            _uiState.update { it.copy(isLoading = true, userMessage = null) }
-            viewModelScope.launch {
-                try {
-                    deleteTaskUseCase.execute(taskId)
-                } catch (e: Exception) {
-                    _uiState.update {
-                        it.copy(userMessage = e.message ?: "")
-                    }
+    fun deleteTask(taskId: Int?) {
+        if (taskId == null) return
+        viewModelScope.launch(context = Dispatchers.IO){
+            try {
+                deleteTaskUseCase.execute(taskId)
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        tasks = currentState.tasks.filter { it.id != taskId },
+                        userMessage = "Task deleted successfully"
+                    )
                 }
+            }
+            catch (e: Exception){
+                _uiState.value = _uiState.value.copy(userMessage = e.message)
+            }
+        }
+    }
+
+    fun updateTask(task: Task){
+        viewModelScope.launch(context = Dispatchers.IO) {
+            try {
+                updateTaskUseCase.execute(task)
+                _uiState.value = _uiState.value.copy(userMessage = "Task updated successfully")
+            }
+            catch (e: Exception){
+                _uiState.value = _uiState.value.copy(userMessage = e.message)
             }
         }
     }

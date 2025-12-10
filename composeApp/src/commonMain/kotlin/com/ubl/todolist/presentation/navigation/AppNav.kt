@@ -5,13 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ubl.todolist.data.local.Task
-import com.ubl.todolist.presentation.screens.ProfileScreen
-import com.ubl.todolist.presentation.screens.SettingsScreen
+import com.ubl.todolist.extension.Constant.EDIT_NOTES_ARGUMENT
+import com.ubl.todolist.extension.Constant.IS_EDITABLE
+import com.ubl.todolist.extension.Constant.TASK_ID
 import com.ubl.todolist.presentation.screens.SplashScreen
-import com.ubl.todolist.presentation.screens.TaskDetailScreen
 import com.ubl.todolist.presentation.screens.addTask.AddTaskScreen
 import com.ubl.todolist.presentation.screens.home.HomeScreen
+import com.ubl.todolist.presentation.screens.taskDetail.TaskDetailScreen
 
 
 @Composable
@@ -20,8 +20,7 @@ fun AppNavHost(
     startDestination: String = NavRoutes.SplashScreen.route
 ) {
     NavHost(
-        navController = navController,
-        startDestination = startDestination
+        navController = navController, startDestination = startDestination
     ) {
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
@@ -29,35 +28,23 @@ fun AppNavHost(
                     navController.navigate(NavRoutes.HomeScreen.route) {
                         popUpTo(NavRoutes.SplashScreen.route) { inclusive = true }
                     }
-                }
-            )
+                })
         }
-        composable(NavRoutes.ProfileScreen.route) {
-            ProfileScreen(navController = navController)
-        }
-
-        // Home
         composable(NavRoutes.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
 
-        // Add Task
         composable(NavRoutes.AddTaskScreen.route) {
-            AddTaskScreen(navController = navController)
+            val isEditable =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Boolean>(IS_EDITABLE)
+            val taskID = navController.previousBackStackEntry?.savedStateHandle?.get<Int>(TASK_ID)
+            AddTaskScreen(navController = navController, isEditable = isEditable, taskID)
         }
-
-        // Task Detail
         composable(NavRoutes.TaskDetailScreen.route) { backStackEntry ->
-            val task = navController.previousBackStackEntry
-                ?.savedStateHandle
-                ?.get<Task>("task")
-            TaskDetailScreen(navController = navController, task = task)
+            val noteId =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Int>(EDIT_NOTES_ARGUMENT)
+            TaskDetailScreen(navController = navController, taskId = noteId)
 
-        }
-
-        // Settings
-        composable(NavRoutes.SettingsScreen.route) {
-            SettingsScreen(navController = navController)
         }
     }
 }
