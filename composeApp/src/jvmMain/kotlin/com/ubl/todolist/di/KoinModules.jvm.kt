@@ -1,7 +1,9 @@
 package com.ubl.todolist.di
 
-import org.koin.core.module.Module
+import com.ubl.todolist.data.local.AppDatabase
+import com.ubl.todolist.db.getDatabaseBuilder
+import org.koin.dsl.module
 
-actual fun platformModule(): Module {
-    TODO("Not yet implemented")
+actual fun platformModule() = module {
+    single<AppDatabase> { getDatabaseBuilder() }
 }

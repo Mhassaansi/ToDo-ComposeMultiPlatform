@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "8.13.2"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -15,21 +15,15 @@ koinCoreVersion = "4.1.1"
 kotlinx-coroutines = "1.10.2"
 navigationCompose = "2.9.1"
 
-
-#kotlinx-datetime = "0.7.1"
-#kotlin = " 2.1.0"
-#ksp = "2.0.0-1.0.21"
-#room = "2.8.4"
-#androidx-sqlite = "2.6.2"
-#composeMultiplatform = "1.6.11"
-
-
-composeMultiplatform = "1.6.11"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.21"
-room = "2.7.0-alpha11"
 kotlinx-datetime = "0.6.0"
-androidx-sqlite = "2.5.0-alpha11"
+room = "2.7.0-alpha01"
+androidx-sqlite = "2.5.0-SNAPSHOT"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
+composeMultiplatform = "1.8.2"
+
+
+
 
 
 
@@ -59,13 +53,11 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-# Important for KMP: The bundled SQLite driver for iOS/Desktop
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqlite" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-#composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

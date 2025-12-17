@@ -40,7 +40,9 @@ fun BottomNavBar(navController: NavController) {
                         else -> {}
                     }
                 },
-                label = { Text(screen.route.substringAfterLast("/").capitalize()) }
+                label = { Text(
+                    screen.route.substringAfterLast("/")
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }) }
             )
         }
     }

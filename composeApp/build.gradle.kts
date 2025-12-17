@@ -65,13 +65,17 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+           // implementation(libs.androidx.room.runtime.jvm)
         }
         iosMain.dependencies {}
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.currentOs) {
+                exclude(group = "org.jetbrains.skiko", module = "skiko-awt")
+            }
+            implementation("org.jetbrains.skiko:skiko-awt:0.9.4.2")
             implementation(libs.kotlinx.coroutinesSwing)
         }
     }
@@ -121,11 +125,17 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "com.ubl.todolist.MainKt"
+        //isShade = true
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.ubl.todolist"
             packageVersion = "1.0.0"
         }
+    }
+}
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.skiko:skiko-awt:0.9.4.2")
     }
 }

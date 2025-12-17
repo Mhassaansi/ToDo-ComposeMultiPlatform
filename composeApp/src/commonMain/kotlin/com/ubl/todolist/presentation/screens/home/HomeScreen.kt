@@ -19,11 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.IconButton
-import androidx.compose.material.TabRowDefaults.Divider
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDownward
@@ -33,6 +30,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material.icons.filled.Report
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -40,9 +38,11 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
@@ -74,9 +74,9 @@ fun HomeScreen(navController: NavController) {
     val viewModel = koinViewModel<HomeScreenViewModel>()
     var tasks = viewModel.uiState.value.tasks
     val visibleTasks = remember { mutableStateListOf<Task>() }
-    remember { mutableStateOf<Task?>(null) }
 
-    LaunchedEffect(tasks) {
+
+    LaunchedEffect(key1 = tasks) {
         visibleTasks.clear()
         visibleTasks.addAll(tasks)
     }
@@ -182,7 +182,6 @@ fun HomeScreen(navController: NavController) {
 fun TaskCard(
     taskData: TaskData,
     onCheckedChange: (Boolean) -> Unit = {},
-    // New parameter to handle the delete action
     onDeleteClick: (Int?) -> Unit,
     navController: NavController,
     backgroundColor: Color = Color.White
@@ -305,7 +304,8 @@ fun AddTaskButton(modifier: Modifier, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val indication = LocalIndication.current
     Box(
-        modifier = modifier.size(56.dp).background(brush = LightHeaderGradient, shape = CircleShape)
+        modifier = modifier.size(56.dp).background(brush = LightHeaderGradient,
+            shape = CircleShape)
             .clickable(
                 onClick = onClick, indication = indication, interactionSource = interactionSource
             ), contentAlignment = Alignment.Center
@@ -374,9 +374,11 @@ fun TaskMenuDropdown(
                 Icon(Icons.Default.ArrowDownward, contentDescription = "Descending")
             })
 
-        DropdownMenuItem(text = { Text("Clear Filters") }, onClick = onClearFilter, leadingIcon = {
+        DropdownMenuItem(text = { Text("Clear Filters") }
+            , onClick = onClearFilter, leadingIcon = {
             Icon(
-                Icons.Default.Close, contentDescription = "Clear Filters", tint = Color.Gray
+                Icons.Default.Close, contentDescription =
+                    "Clear Filters", tint = Color.Gray
             )
         })
     }
