@@ -21,7 +21,8 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController, startDestination = startDestination
-    ) {
+    )
+    {
         composable(NavRoutes.SplashScreen.route) {
             SplashScreen(
                 onTimeOut = {
