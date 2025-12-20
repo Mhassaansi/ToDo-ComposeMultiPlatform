@@ -1,66 +1,95 @@
-  This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+📔 KMP Todo Multiplatform
+A production-ready Todo & Notes application built with Kotlin Multiplatform (KMP). This project demonstrates a unified codebase for Android and Desktop (JVM) using modern declarative UI and reactive data persistence.
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+✨ Features
+Full CRUD Operations: Create, Read, Update, and Delete notes.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Real-time Updates: Reactive UI that updates instantly when the database changes using Kotlin Flows.
 
-### Build and Run Android Application
+Cross-Platform UI: 100% shared UI code between Android and Desktop using Compose Multiplatform.
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+Local Persistence: Data is stored locally on each platform using the Room KMP library.
 
-### Build and Run Desktop (JVM) Application
+Dependency Injection: Clean architecture powered by Koin for managing platform-specific dependencies.
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+🛠 Tech Stack
+UI: Compose Multiplatform
 
-### Build and Run Web Application
+Database: Room KMP (SQLite)
 
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:wasmJsBrowserDevelopmentRun
-  ```
+DI Framework: Koin
 
-### Build and Run iOS Application
+Async: Kotlin Coroutines & Flow
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Architecture: MVVM (Model-View-ViewModel) with Clean Architecture layers.
 
----
+📂 Project Structure
+Plaintext
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+.
+├── composeApp/
+│   ├── commonMain/           # Shared UI, ViewModels, and Room Database definition
+│   │   ├── kotlin/
+│   │   │   ├── data/         # Room Entities, DAOs, and Database
+│   │   │   ├── di/           # Common Koin Modules
+│   │   │   ├── ui/           # Shared Composables (NoteList, EditNote)
+│   │   │   └── viewmodel/    # Shared Business Logic
+│   ├── androidMain/          # Android-specific Room/Koin initialization
+│   └── desktopMain/          # Desktop-specific Room/Koin initialization
+└── gradle/                   # Version catalog (libs.versions.toml)
+⚙️ Setup & Configuration
+1. Database (Room)
+The app uses the new Room Multiplatform runtime.
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+Android: Database is created using Context.getDatabasePath().
+
+Desktop: Database is stored in the local application data directory using java.io.File.
+
+2. Dependency Injection (Koin)
+The project utilizes expect/actual modules to provide platform-specific database builders:
+
+Kotlin
+
+// commonMain
+expect val platformModule: Module
+
+// Initialization in commonMain
+fun initKoin(config: KoinAppDeclaration? = null) {
+    startKoin {
+        config?.invoke(this)
+        modules(sharedModule, platformModule)
+    }
+}
+🚀 How to Run
+Prerequisites
+Android Studio Ladybug or IntelliJ IDEA 2024.2+
+
+JDK 17+
+
+Kotlin Multiplatform plugin installed.
+
+Running on Android
+Select the composeApp run configuration.
+
+Select your Android Emulator or physical device.
+
+Click Run.
+
+Running on Desktop (Windows/macOS/Linux)
+Open the Gradle tool window.
+
+Navigate to composeApp > Tasks > compose desktop > run.
+
+Or use the terminal:
+
+Bash
+
+./gradlew :composeApp:run
+📝 Usage Guide
+Add Note: Click the Floating Action Button (FAB) to open the editor.
+
+Edit: Tap/Click on any note to modify its content.
+
+Delete: Long-press (Android) or Right-click/Delete Icon (Desktop) to remove a note.
+
+Save: Changes are auto-persisted to the Room database.
