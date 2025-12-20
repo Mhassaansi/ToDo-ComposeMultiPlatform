@@ -145,20 +145,6 @@ Or open the project in Android Studio and run the Android configuration.
 - Repository module: Provides NotesRepository
 - ViewModel module: Provides NotesViewModel
 
-## 🎨 UI Features
-
-### Notes List Screen
-- Grid layout for desktop, list for mobile
-- Search bar for filtering notes
-- Floating action button to create new note
-- Swipe-to-delete on Android
-- Click to edit existing note
-
-### Note Edit Screen
-- Title and content text fields
-- Save and cancel actions
-- Auto-save on back navigation
-- Timestamp display
 
 ## 🔑 Key Implementation Details
 
