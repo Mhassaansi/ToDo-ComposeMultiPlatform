@@ -43,52 +43,7 @@ A modern, cross-platform note-taking application built with Kotlin Multiplatform
 - **Android SDK**: Min API 24, Target API 35
 - **Desktop**: JVM 17+
 
-## 📁 Project Structure
 
-```
-notes-app-kmp/
-├── composeApp/
-│   ├── src/
-│   │   ├── androidMain/          # Android-specific code
-│   │   │   ├── kotlin/
-│   │   │   │   └── com/example/notes/
-│   │   │   │       ├── MainActivity.kt
-│   │   │   │       └── database/
-│   │   │   │           └── DatabaseBuilder.android.kt
-│   │   │   └── AndroidManifest.xml
-│   │   ├── commonMain/           # Shared code
-│   │   │   ├── kotlin/
-│   │   │   │   └── com/example/notes/
-│   │   │   │       ├── App.kt
-│   │   │   │       ├── database/
-│   │   │   │       │   ├── NotesDatabase.kt
-│   │   │   │       │   ├── NoteEntity.kt
-│   │   │   │       │   ├── NoteDao.kt
-│   │   │   │       │   └── DatabaseBuilder.kt
-│   │   │   │       ├── di/
-│   │   │   │       │   └── AppModule.kt
-│   │   │   │       ├── repository/
-│   │   │   │       │   └── NotesRepository.kt
-│   │   │   │       ├── viewmodel/
-│   │   │   │       │   └── NotesViewModel.kt
-│   │   │   │       └── ui/
-│   │   │   │           ├── screens/
-│   │   │   │           │   ├── NotesListScreen.kt
-│   │   │   │           │   └── NoteEditScreen.kt
-│   │   │   │           └── theme/
-│   │   │   │               └── Theme.kt
-│   │   │   └── composeResources/
-│   │   └── desktopMain/          # Desktop-specific code
-│   │       └── kotlin/
-│   │           └── com/example/notes/
-│   │               ├── main.kt
-│   │               └── database/
-│   │                   └── DatabaseBuilder.desktop.kt
-│   └── build.gradle.kts
-├── gradle/
-│   └── libs.versions.toml
-└── build.gradle.kts
-```
 
 ## 🔧 Setup Instructions
 
