@@ -298,17 +298,6 @@ Output: `composeApp/build/compose/binaries/main/`
 5. Open a Pull Request
 
 
-## 👥 Authors
-
-- Your Name - Initial work
-
-## 🙏 Acknowledgments
-
-- JetBrains for Compose Multiplatform
-- Google for Room Database
-- Insert-Koin team for Koin DI
-- Kotlin team for KMP
-
 ## 📞 Support
 
 For questions or issues:
