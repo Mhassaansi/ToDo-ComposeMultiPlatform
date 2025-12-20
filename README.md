@@ -192,19 +192,6 @@ actual class DatabaseBuilder {
 }
 ```
 
-### StateFlow Management
-
-```kotlin
-class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
-    private val _notes = MutableStateFlow<List<NoteEntity>>(emptyList())
-    val notes: StateFlow<List<NoteEntity>> = _notes.asStateFlow()
-    
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-}
-```
-
-
 
 ```bash
 # Common tests
