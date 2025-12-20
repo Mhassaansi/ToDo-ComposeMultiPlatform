@@ -26,7 +26,6 @@ Architecture: MVVM (Model-View-ViewModel) with Clean Architecture layers.
 📂 Project Structure
 Plaintext
 
-.
 ├── composeApp/
 │   ├── commonMain/           # Shared UI, ViewModels, and Room Database definition
 │   │   ├── kotlin/
@@ -37,6 +36,8 @@ Plaintext
 │   ├── androidMain/          # Android-specific Room/Koin initialization
 │   └── desktopMain/          # Desktop-specific Room/Koin initialization
 └── gradle/                   # Version catalog (libs.versions.toml)
+
+
 ⚙️ Setup & Configuration
 1. Database (Room)
 The app uses the new Room Multiplatform runtime.
