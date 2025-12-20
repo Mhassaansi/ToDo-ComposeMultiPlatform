@@ -12,6 +12,13 @@ A modern, cross-platform note-taking application built with Kotlin Multiplatform
 - 🏗️ Clean MVVM architecture
 - 💉 Dependency injection with Koin
 
+📱 Screenshots
+<div align="center">
+  <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.40%20(1).jpeg" alt="Notes List Screen" width="250"/>
+  <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.40.jpeg" alt="Create Note Screen" width="250"/>
+  <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.41.jpeg" alt="Edit Note Screen" width="250"/>
+</div>
+
 ## 🛠️ Tech Stack
 
 ### Core Technologies
