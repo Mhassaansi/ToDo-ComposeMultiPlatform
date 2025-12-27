@@ -45,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,7 +73,11 @@ fun HomeScreen(navController: NavController) {
 
     val menuExpanded = remember { mutableStateOf(false) }
     val viewModel = koinViewModel<HomeScreenViewModel>()
-    var tasks = viewModel.uiState.value.tasks
+    //var tasks = viewModel.uiState.value.tasks
+
+    val uiState = viewModel.uiState.collectAsState()
+    var tasks = uiState.value.tasks
+
     val visibleTasks = remember { mutableStateListOf<Task>() }
 
 

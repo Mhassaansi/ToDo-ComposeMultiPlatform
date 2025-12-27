@@ -19,6 +19,10 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        google()
+        mavenCentral()
+        // Add this if it's not already there!
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
@@ -26,10 +30,6 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        google()
-        mavenCentral()
-        // Add this if it's not already there!
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 

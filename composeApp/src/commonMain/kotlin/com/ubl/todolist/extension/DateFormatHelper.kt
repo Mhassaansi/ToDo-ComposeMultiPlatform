@@ -1,7 +1,9 @@
 package com.ubl.todolist.extension
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 expect object DateFormatHelper {
     fun getFormattedDate(
@@ -11,6 +13,7 @@ expect object DateFormatHelper {
 }
 
 
+@OptIn(ExperimentalTime::class)
 fun getCurrentTimeAsLong(): Long {
     val currentInstant: Instant = Clock.System.now()
     return currentInstant.toEpochMilliseconds()

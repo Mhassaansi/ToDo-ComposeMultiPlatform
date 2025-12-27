@@ -19,19 +19,26 @@ repositories {
 
 kotlin {
 
+    sourceSets.commonMain {
+        // This allows the IDE to see the generated code for all platforms
+        kotlin.srcDir("build/generated/ksp/metadata/kotlin")
+    }
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    iosX64()
+
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -62,6 +69,7 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.androidx.annotation)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
@@ -110,22 +118,36 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    dependencies {
+        debugImplementation(compose.uiTooling)
+    }
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
-    add("kspJvm", libs.androidx.room.compiler)
 
+dependencies {
+    val roomCompiler = libs.androidx.room.compiler
+
+    add("kspAndroid", roomCompiler)
+    add("kspJvm", roomCompiler)
+
+
+    add("kspIosX64", roomCompiler)
+    add("kspIosArm64", roomCompiler)
+    add("kspIosSimulatorArm64", roomCompiler)
+
+
+    add("kspCommonMainMetadata", roomCompiler)
+}
+
+ksp {
+    arg("room.generateKotlin", "true")
 }
 
 compose.desktop {
     application {
         mainClass = "com.ubl.todolist.MainKt"
-        //isShade = true
+
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
@@ -139,3 +161,31 @@ configurations.all {
         force("org.jetbrains.skiko:skiko-awt:0.9.4.2")
     }
 }
+
+// Source - https://stackoverflow.com/a
+// Posted by SwHeroCat, modified by community. See post 'Timeline' for change history
+// Retrieved 2025-12-27, License - CC BY-SA 4.0
+
+/*tasks.withType<com.google.devtools.ksp.gradle.KspAATask>().configureEach {
+    // This ensures that the resource generation task runs before KSP
+    dependsOn(
+        // Android
+        "generateActualResourceCollectorsForAndroidMain",
+        "generateResourceAccessorsForAndroidMain",
+        "generateActualResourceCollectorsForAndroidMain",
+        "generateComposeResClass",
+        "generateResourceAccessorsForCommonMain",
+        "generateExpectResourceCollectorsForCommonMain",
+        "generateResourceAccessorsForAndroidDebug",
+        // iOS
+        "generateResourceAccessorsForIosArm64Main",
+        "generateActualResourceCollectorsForIosArm64Main",
+        "generateResourceAccessorsForIosMain",
+        "generateResourceAccessorsForAppleMain",
+        "generateResourceAccessorsForNativeMain",
+    )
+}*/
+
+
+
+
