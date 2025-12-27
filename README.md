@@ -161,11 +161,13 @@ Or open the project in Android Studio and run the Android configuration.
 
 ```kotlin
 // commonMain
-expect class DatabaseBuilder {
-    fun build(): NotesDatabase
-}
+expect fun platformModule(): Module
 
 // androidMain
+actual fun platformModule() = module {
+    single<AppDatabase> { getDatabaseBuilder(get()) }
+}
+
 fun getDatabaseBuilder(ctx: Context): AppDatabase {
     val dbFile = ctx.getDatabasePath("task.db")
     return Room.databaseBuilder<AppDatabase>(ctx, dbFile.absolutePath)
