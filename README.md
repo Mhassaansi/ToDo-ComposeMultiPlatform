@@ -19,6 +19,13 @@ A modern, cross-platform note-taking application built with Kotlin Multiplatform
   <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.41.jpeg" alt="Edit Note Screen" width="250"/>
 </div>
 
+📱Ios Screenshots
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Mhassaansi/ToDo-ComposeMultiPlatform/master/All%20Tasks.png" alt="All Tasks Screen" width="250"/>
+  <img src="https://raw.githubusercontent.com/Mhassaansi/ToDo-ComposeMultiPlatform/master/Create%20Task.png" alt="Create Task Screen" width="250"/>
+  <img src="https://raw.githubusercontent.com/Mhassaansi/ToDo-ComposeMultiPlatform/master/Full%20Task.png" alt="Full Task Screen" width="250"/>
+</div>
+
 ## 🛠️ Tech Stack
 
 ### Core Technologies
