@@ -12,7 +12,7 @@ A modern, cross-platform note-taking application built with Kotlin Multiplatform
 - 🏗️ Clean MVVM architecture
 - 💉 Dependency injection with Koin
 
-📱 Screenshots
+📱 Android Screenshots
 <div align="center">
   <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.40%20(1).jpeg" alt="Notes List Screen" width="250"/>
   <img src="https://github.com/Mhassaansi/ToDo-ComposeMultiPlatform/blob/master/WhatsApp%20Image%202025-12-20%20at%2013.18.40.jpeg" alt="Create Note Screen" width="250"/>
@@ -60,13 +60,13 @@ The project uses Gradle version catalog (`libs.versions.toml`):
 
 ```toml
 [versions]
-kotlin = "2.1.0"
+kotlin = "2.3.0"
 compose = "1.7.1"
-agp = "8.7.3"
+agp = "8.13.2"
 androidx-activityCompose = "1.9.3"
-room = "2.7.0-alpha12"
-koin = "4.0.0"
-ksp = "2.1.0-1.0.29"
+room = "2.8.4"
+koinCoreVersion = "4.1.1"
+ksp = "2.3.4"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -157,25 +157,33 @@ expect class DatabaseBuilder {
 }
 
 // androidMain
-actual class DatabaseBuilder(private val context: Context) {
-    actual fun build(): NotesDatabase {
-        val dbFile = context.getDatabasePath("notes.db")
-        return Room.databaseBuilder<NotesDatabase>(
-            context = context.applicationContext,
-            name = dbFile.absolutePath
-        ).build()
-    }
+fun getDatabaseBuilder(ctx: Context): AppDatabase {
+    val dbFile = ctx.getDatabasePath("task.db")
+    return Room.databaseBuilder<AppDatabase>(ctx, dbFile.absolutePath)
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(Dispatchers.IO)
+        .fallbackToDestructiveMigration(false)
+        .build()
+}
+
+//iosMain
+fun getDatabaseBuilder(ctx: Context): AppDatabase {
+    val dbFile = ctx.getDatabasePath("task.db")
+    return Room.databaseBuilder<AppDatabase>(ctx, dbFile.absolutePath)
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(Dispatchers.IO)
+        .fallbackToDestructiveMigration(false)
+        .build()
 }
 
 // desktopMain
-actual class DatabaseBuilder {
-    actual fun build(): NotesDatabase {
-        val dbFile = File(System.getProperty("user.home"), "notes.db")
-        return Room.databaseBuilder<NotesDatabase>(
-            name = dbFile.absolutePath
-        ).build()
-    }
-}
+fun getDatabaseBuilder(): AppDatabase {
+    val dbPath: File =  File(System.getProperty("java.io.tmpdir"), "task.db")
+    return Room.databaseBuilder<AppDatabase>(
+        name = dbPath.absolutePath,
+    ).setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(Dispatchers.IO)
+        .build()}
 ```
 
 
